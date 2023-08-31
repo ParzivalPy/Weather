@@ -32,6 +32,8 @@ async function displayCityInfo(city) {
     villeInfoList.forEach((ville, index) => {
     console.log(`${index + 1}. ${ville.name}, ${ville.adminDivision}`);
     });
+
+    comboChange(villeInfoList);
 }
 
 function cityClick() {
@@ -40,6 +42,21 @@ function cityClick() {
     displayCityInfo(cityToSearch);
 }
 
-const buttonElement = document.getElementById("cityButton");
+function comboChange(cityList) {
+    const comboList = document.getElementById('comboList')
 
-buttonElement.addEventListener("click", cityClick);
+    while (comboList.firstChild) {
+        comboList.removeChild(comboList.firstChild)
+    }
+
+    cityList.forEach((ville, index) => {
+        const optionElement = document.createElement('option');
+        optionElement.value = "opt" + index + 1;
+        optionElement.textContent = ville.name + ", " + ville.adminDivision;
+        comboList.appendChild(optionElement);
+    });
+}
+
+const inputChange = document.getElementById("cityName");
+
+inputChange.addEventListener("change", cityClick);
