@@ -1,5 +1,6 @@
 html, body {
     margin: 0;
+    font-family: 'Arial';
 }
 
 .app {
@@ -7,7 +8,8 @@ html, body {
     padding: 20px;
     border-radius: 50px;
     flex-direction: row;
-    margin: 20px
+    margin: 20px;
+    text-align: center;
 }
 
 .title {
@@ -30,4 +32,18 @@ input, select, button {
     width: 200px;
     margin-left: 10px;
     margin-right: 10px;
+    text-align: center;
+}
+
+.tableau {
+    margin-top: 20px;
+    display: inline-table;
+    border-radius: 50px;
+    overflow: scroll;
+}
+
+#myTable {
+    width: max-content;
+    border-collapse: collapse;
+    display: flex;
 }

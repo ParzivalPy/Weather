@@ -28,17 +28,11 @@ async function displayCityInfo(city) {
     return;
     }
 
-    console.log('City Information:');
-    villeInfoList.forEach((ville, index) => {
-    console.log(`${index + 1}. ${ville.name}, ${ville.adminDivision}`);
-    });
-
     comboChange(villeInfoList);
 }
 
 function cityClick() {
     let cityToSearch = document.getElementById("cityName").value;
-    console.log(cityToSearch);
     displayCityInfo(cityToSearch);
 }
 
@@ -62,12 +56,12 @@ const inputChange = document.getElementById("cityName");
 inputChange.addEventListener("change", cityClick);
 
 async function rechercher() {
-    const apiUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${city}&count=10&language=en&format=json`;
+    const apiUrl = 'https://geocoding-api.open-meteo.com/v1/search?name=' + city + '&count=10&language=en&format=json';
     try {
         const response = await fetch(apiUrl);
         const data = await response.json();
         const results = data.results;
-
+        document.getElementById()
         const firstCity = data.features[0];
         const latitude = firstCity.latitude;
         const longitude = firstCity.longitude;
@@ -82,32 +76,85 @@ searchButton.addEventListener('click', rechercher);
 
 async function rechercher() {
     let city = document.getElementById("cityName").value;
-    const apiUrl = 'https://geocoding-api.open-meteo.com/v1/search?name=${city}&count=10&language=en&format=json';
+    const apiUrl = 'https://geocoding-api.open-meteo.com/v1/search?name=' + city + '&count=10&language=en&format=json';
     try {
+        const cityNumber = obtenirValeurOptionSelectionnee();
         const response = await fetch(apiUrl);
         const data = await response.json();
-        const results = data.results;
+        const results = data.results[cityNumber];
 
-        let cityLatitude = results[0]["latitude"];
-        let cityLongitude = results[0]["longitude"];
-        console.log(cityLatitude + " / " + cityLongitude)
+        const cityLatitude = results["latitude"];
+        const cityLongitude = results["longitude"];
+
+        meteoApi(cityLatitude, cityLongitude);
     } catch (error) {
         console.log('Une erreur s\'est produite : ' + error)
     }
 }
 
-async function recuperationMeteo(lat, lon) {
-    const apiMeteo = 'https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m';
-    try {
-        const response = await fetch(apiMeteo);
-        const data = await response.json();
-        const hourly = data.hourly;
+async function meteoApi(lat, lon) {
+    const meteoApi = 'https://api.open-meteo.com/v1/forecast?latitude=' + lat + '&longitude=' + lon + '&hourly=temperature_2m';
 
-        for (i=0; i>= hourly.length; i++) {
-            let time = hourly["time"][i].split('T')
-            console.log(time)
+    try {
+        const response = await fetch(meteoApi);
+        const data = await response.json();
+        const hourlyTemperature = data.hourly;
+
+        for (let i = 0; i < hourlyTemperature['time'].length; i++) {
+            const time = hourlyTemperature['time'][i].split('T');
+            const temperature = hourlyTemperature['temperature_2m'][i];
+        }
+        createTable(hourlyTemperature['time'].length, hourlyTemperature)
+    } catch (error) {
+        console.error("An error occurred:", error);
+    }
+}
+
+function obtenirValeurOptionSelectionnee() {
+    selectElement = document.getElementById('comboList');
+    var selectedIndex = selectElement.selectedIndex;
+    var selectedValue = selectElement.options[selectedIndex].value;
+    return selectedValue;
+}
+
+function createTable(len, data) {
+    try {
+        var tableBody = document.getElementById("tr1");
+
+        for (var i = 1; i <= len; i++) {
+        var td = document.createElement("td");
+        td.textContent = "ID " + i;
+        td.id = "tr1td" + i;
+        tableBody.appendChild(td);
+        }
+
+        var tableBody = document.getElementById("tr2");
+
+        for (var i = 1; i <= len; i++) {
+        var td = document.createElement("td");
+        td.textContent = "ID " + i;
+        td.id = "tr2td" + i;
+        tableBody.appendChild(td);
+        }
+        
+        for (i = 1; i <= len; i ++) {
+            let cell = document.getElementById("tr1td" + i);
+            cell.textContent = data['time'][i];
+        }
+
+        for (i = 1; i <= len; i ++) {
+            let cell = document.getElementById("tr2td" + i)
+            cell.textContent = data['temperature_2m'][i];
         }
     } catch (error) {
-        console.log('Une erreur s\'est produite : ' + error)
+        console.log('An error occured : ' + error)
+    }
+}
+
+function fillTable(data) {
+    for (i = 1; i <= data.length; i ++) {
+        let cell = document.getElementById("tr1td" + i)
+        console.log(document.getElementById('tr1td8').id)
+        cell.textContent = data['time'][i];
     }
 }
