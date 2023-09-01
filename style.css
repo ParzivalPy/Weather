@@ -39,11 +39,14 @@ input, select, button {
     margin-top: 20px;
     display: inline-table;
     border-radius: 50px;
-    overflow: scroll;
+    overflow-x: auto;
 }
 
 #myTable {
     width: max-content;
-    border-collapse: collapse;
-    display: flex;
+    table-layout: fixed;
+}
+
+tr, td {
+    white-space: nowrap;
 }
