@@ -36,17 +36,24 @@ input, select, button {
 }
 
 .tableau {
-    margin-top: 20px;
-    display: inline-table;
-    border-radius: 50px;
-    overflow-x: auto;
-}
-
-#myTable {
-    width: max-content;
-    table-layout: fixed;
-}
-
-tr, td {
+    margin: 20px;
+    padding: 4px;
+    width: 100% - 40px;
+    overflow: auto;
     white-space: nowrap;
+    border: #000000 solid 2px;
+    border-radius: 10px;
 }
+
+::-webkit-scrollbar {
+    width: 20px;
+}
+
+::-webkit-scrollbar-track {
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #0e4b48; 
+    border-radius: 10px;
+  }
